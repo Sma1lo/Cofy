@@ -1,0 +1,53 @@
+### --- SCHEMA & ENVIRONMENT --- ###
+
+-- Check existing relations and definitions
+\dt
+\d product
+
+
+### --- DATA SEEDING & MUTATIONS --- ###
+
+-- Insert standard coffee SKU
+INSERT INTO product (product_type, name, price, volumeml)
+VALUES ('COFFEE', 'Americano', 150.0, 250);
+
+-- Insert standard pastry SKU
+INSERT INTO product (product_type, name, price, filling)
+VALUES ('BUN', 'Croissant', 120.0, 'Chocolate');
+
+-- Update unit price by identifier
+UPDATE product SET price = 180.0 WHERE id = 1;
+
+-- Remove record by identifier
+DELETE FROM product WHERE id = 2;
+
+
+### --- DATA RETRIEVAL & FILTERS --- ###
+
+-- Fetch full inventory
+SELECT * FROM product;
+
+-- Filter by specific category
+SELECT * FROM product WHERE product_type = 'COFFEE';
+
+-- Search by partial name match
+SELECT * FROM product WHERE name ILIKE '%latte%';
+
+
+### --- INVENTORY ANALYTICS --- ###
+
+-- Aggregate count by product category
+SELECT product_type, COUNT(*) FROM product GROUP BY product_type;
+
+-- Calculate total inventory value
+SELECT SUM(price) FROM product;
+
+
+### --- MAINTENANCE & CLEANUP --- ###
+
+-- Remove legacy entities
+DROP TABLE IF EXISTS coffee;
+DROP TABLE IF EXISTS bun;
+
+-- Wipe table data
+TRUNCATE TABLE product;
