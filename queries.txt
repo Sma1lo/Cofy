@@ -1,53 +1,50 @@
-### --- SCHEMA & ENVIRONMENT --- ###
-
--- Check existing relations and definitions
+-- =========================================================
+-- SCHEMA CHECK (ONLY IN psql)
+-- =========================================================
 \dt
 \d product
 
 
-### --- DATA SEEDING & MUTATIONS --- ###
+-- =========================================================
+-- INSERT
+-- =========================================================
 
--- Insert standard coffee SKU
-INSERT INTO product (product_type, name, price, volumeml)
-VALUES ('COFFEE', 'Americano', 150.0, 250);
+-- COFFEE
+INSERT INTO product (product_type, name, price, volumeml, filling)
+VALUES ('COFFEE', 'Latte', 180.0, 300, NULL);
 
--- Insert standard pastry SKU
-INSERT INTO product (product_type, name, price, filling)
-VALUES ('BUN', 'Croissant', 120.0, 'Chocolate');
-
--- Update unit price by identifier
-UPDATE product SET price = 180.0 WHERE id = 1;
-
--- Remove record by identifier
-DELETE FROM product WHERE id = 2;
+-- BUN
+INSERT INTO product (product_type, name, price, volumeml, filling)
+VALUES ('BUN', 'Chocolate Bun', 140.0, NULL, 'Chocolate');
 
 
-### --- DATA RETRIEVAL & FILTERS --- ###
+-- =========================================================
+-- READ
+-- =========================================================
 
--- Fetch full inventory
 SELECT * FROM product;
 
--- Filter by specific category
 SELECT * FROM product WHERE product_type = 'COFFEE';
 
--- Search by partial name match
-SELECT * FROM product WHERE name ILIKE '%latte%';
+SELECT * FROM product WHERE product_type = 'BUN';
 
 
-### --- INVENTORY ANALYTICS --- ###
+-- =========================================================
+-- UPDATE / DELETE
+-- =========================================================
 
--- Aggregate count by product category
-SELECT product_type, COUNT(*) FROM product GROUP BY product_type;
+UPDATE product
+SET price = 200
+WHERE name = 'Latte';
 
--- Calculate total inventory value
-SELECT SUM(price) FROM product;
+DELETE FROM product
+WHERE name = 'Chocolate Bun';
 
 
-### --- MAINTENANCE & CLEANUP --- ###
+-- =========================================================
+-- CLEANUP
+-- =========================================================
 
--- Remove legacy entities
-DROP TABLE IF EXISTS coffee;
-DROP TABLE IF EXISTS bun;
-
--- Wipe table data
 TRUNCATE TABLE product;
+
+DROP TABLE IF EXISTS product;
